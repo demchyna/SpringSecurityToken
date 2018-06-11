@@ -1,4 +1,4 @@
-package com.softserve.academy.DAO;
+package com.softserve.academy.config;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

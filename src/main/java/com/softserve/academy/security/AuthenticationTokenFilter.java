@@ -1,5 +1,6 @@
 package com.softserve.academy.security;
 
+import com.softserve.academy.service.AuthenticationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,9 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class AuthenticationTokenFilter extends AbstractAuthenticationProcessingFilter {
 
-    public TokenAuthenticationFilter(String url) {
+    public AuthenticationTokenFilter(String url) {
         super(new AntPathRequestMatcher(url));
     }
 
@@ -28,9 +29,9 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        String token = request.getHeader("Authentication");
+        String token = request.getHeader("Authorization");
 
         if (token != null) {
             UserAuthentication userAuthentication = new UserAuthentication(token);
@@ -44,12 +45,12 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        response.setHeader("Authentication", TokenAuthenticationService.refreshToken(authentication));
+        response.setHeader("Authorization", AuthenticationTokenService.refreshToken(authentication));
         chain.doFilter(request, response);
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
         SecurityContextHolder.clearContext();
         System.out.println(failed.getMessage());
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");

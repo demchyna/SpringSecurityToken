@@ -13,7 +13,7 @@ import java.io.IOException;
 public class AuthenticationAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException {
         System.out.println(exception.getMessage());
         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
     }

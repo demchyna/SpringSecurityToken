@@ -3,6 +3,7 @@ package com.softserve.academy.security;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.academy.model.Role;
+import com.softserve.academy.service.AuthenticationTokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,9 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TokenAuthenticationManager implements AuthenticationManager {
+public class AuthenticationTokenManager implements AuthenticationManager {
 
-    ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -23,10 +24,10 @@ public class TokenAuthenticationManager implements AuthenticationManager {
         UserAuthentication userAuthentication = (UserAuthentication) authentication;
 
         try {
-            int userId = TokenAuthenticationService.getUserIdFromToken(userAuthentication.getToken());
-            String username = TokenAuthenticationService.getUsernameFromToken(userAuthentication.getToken());
+            int userId = AuthenticationTokenService.getUserIdFromToken(userAuthentication.getToken());
+            String username = AuthenticationTokenService.getUsernameFromToken(userAuthentication.getToken());
             List<Role> authorities = mapper.convertValue(
-                    TokenAuthenticationService.getRolesFromToken(userAuthentication.getToken()),
+                    AuthenticationTokenService.getRolesFromToken(userAuthentication.getToken()),
                     new TypeReference<List<Role>>() { }
             );
 

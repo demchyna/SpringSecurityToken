@@ -1,7 +1,8 @@
-package com.softserve.academy.security;
+package com.softserve.academy.service;
 
 import com.softserve.academy.model.Role;
 import com.softserve.academy.model.User;
+import com.softserve.academy.security.UserProxy;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class TokenAuthenticationService {
+public class AuthenticationTokenService {
 
     private static String TOKEN_PREFIX;
     private static long EXPIRATION_TIME;

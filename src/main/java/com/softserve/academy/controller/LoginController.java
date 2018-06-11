@@ -1,6 +1,8 @@
-package com.softserve.academy.security;
+package com.softserve.academy.controller;
 
 import com.softserve.academy.model.User;
+import com.softserve.academy.service.AuthenticationTokenService;
+import com.softserve.academy.security.UserCredential;
 import com.softserve.academy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +27,7 @@ public class LoginController {
         String fullToken;
 
         if (user.getPassword().equals(credential.getPassword())) {
-            fullToken = TokenAuthenticationService.createToken(user);
+            fullToken = AuthenticationTokenService.createToken(user);
             response.addHeader(HEADER_NAME, fullToken);
         } else {
             System.err.println("Password is incorrect");

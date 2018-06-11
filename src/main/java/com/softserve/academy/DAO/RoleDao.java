@@ -1,5 +1,6 @@
 package com.softserve.academy.DAO;
 
+import com.softserve.academy.config.DatasourceFactory;
 import com.softserve.academy.model.Role;
 import org.springframework.stereotype.Repository;
 import java.util.List;

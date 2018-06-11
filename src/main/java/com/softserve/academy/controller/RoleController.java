@@ -19,14 +19,12 @@ public class RoleController {
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public Role getRoleById(@PathVariable int id) {
-        Role role = roleService.getRoleById(id);
-        return role;
+        return roleService.getRoleById(id);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public List<Role> getAllRoles() throws IOException {
-        List<Role> roles = roleService.getAllRoles();
-        return roles;
+        return (List<Role>) roleService.getAllRoles();
     }
 }

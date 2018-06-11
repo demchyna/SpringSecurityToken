@@ -43,7 +43,7 @@ public class DataConfig {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
 
-        sessionFactory.setPackagesToScan(new String[] { "com.softserve.academy.model" });
+        sessionFactory.setPackagesToScan("com.softserve.academy.model");
         sessionFactory.setHibernateProperties(getHibernateProperties());
 
         return sessionFactory;
@@ -52,8 +52,7 @@ public class DataConfig {
     @Autowired
     @Bean
     public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
-        return transactionManager;
+        return new HibernateTransactionManager(sessionFactory);
     }
 
     private Properties getHibernateProperties() {

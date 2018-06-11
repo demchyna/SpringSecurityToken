@@ -1,8 +1,8 @@
 package com.softserve.academy.config;
 
 import com.softserve.academy.security.AuthenticationAccessDeniedHandler;
-import com.softserve.academy.security.TokenAuthenticationFilter;
-import com.softserve.academy.security.TokenAuthenticationManager;
+import com.softserve.academy.security.AuthenticationTokenFilter;
+import com.softserve.academy.security.AuthenticationTokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
@@ -34,13 +34,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String SECURE_URL;
 
     @Autowired private AbstractAuthenticationProcessingFilter tokenAuthenticationFilter;
-    @Autowired private TokenAuthenticationManager tokenAuthenticationManager;
+    @Autowired private AuthenticationTokenManager authenticationTokenManager;
 
     @Autowired private AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().sessionManagement()
+        http.csrf().disable()
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
@@ -55,15 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedHandler(authenticationAccessDeniedHandler);
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**");
-    }
-
     @Bean
-    public AbstractAuthenticationProcessingFilter getTokenAuthenticationFilter() throws Exception {
-        TokenAuthenticationFilter filter = new TokenAuthenticationFilter(SECURE_URL);
-        filter.setAuthenticationManager(tokenAuthenticationManager);
+    public AbstractAuthenticationProcessingFilter getTokenAuthenticationFilter() {
+        AuthenticationTokenFilter filter = new AuthenticationTokenFilter(SECURE_URL);
+        filter.setAuthenticationManager(authenticationTokenManager);
         return filter;
     }
 

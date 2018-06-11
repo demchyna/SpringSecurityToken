@@ -27,8 +27,7 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.details.id)")
     public User getUserById(@PathVariable int id) {
-        User user = userService.getUserById(id);
-        return user;
+        return userService.getUserById(id);
     }
 
     @RequestMapping(value = "api/user/update", method = RequestMethod.PUT)
@@ -49,7 +48,6 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllUsers() throws IOException {
-        List<User> users = userService.getAllUsers();
-        return users;
+        return (List<User>) userService.getAllUsers();
     }
 }
